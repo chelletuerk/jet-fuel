@@ -1,4 +1,10 @@
+const $folderContainer = $('.folder-container');
 
-const renderSomething = () => {
+$('.folder-submit').on('click', () => {
+  let folderInput = $('.folder-input').val();
+  addFolderToList(folderInput);
+})
 
+const addFolderToList = (folder) => {
+  $('.folder-container').append(`<div>${folder}</div>`);
 }
