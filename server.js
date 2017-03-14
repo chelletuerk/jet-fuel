@@ -1,5 +1,6 @@
 const http = require("http");
 
+
 const server = http.createServer()
 
 server.listen(3000, () => {
@@ -11,3 +12,8 @@ server.on('request', (request, response) => {
   response.write('Hello World');
   response.end();
 });
+
+const port = process.env.PORT || 3000;
+
+server.listen(port);
+console.log(`Listening on ${port}`);
