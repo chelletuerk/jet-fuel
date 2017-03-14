@@ -1,24 +1,33 @@
-const http = require("http");
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
 
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
-const server = http.createServer()
+app.set('port', process.env.PORT || 3000)
 
-server.listen(3000, () => {
-  console.log('The HTTP server is listening at Port 3000.');
-});
+app.locals.folders = [
+  { 'folder1': [{
+    submitDate: '03142017',
+    numOfClicks: '3',
+    shortenedUrl: 'http://www.g.com',
+    url: 'http://www.google.com'
+    }]
+  },
+  { 'folder2': [{
+    submitDate: '03152017',
+    numOfClicks: '1',
+    shortenedUrl: 'http://www.a.com',
+    url: 'http://www.amazon.com'
+    }]
+  }
+]
 
-server.on('request', (request, response) => {
-  response.writeHead(200, { 'Content-Type': 'text/plain' });
-  response.write('Hello World');
-  response.end();
-});
+app.get('/api/v1/folders', (request, response) => {
+  response.send(app.locals.folders)
+})
 
-
-// app.locals.folders = []
-// folder = { id: 1, name: food }
-// app.locals.folders.push.(folder)
-
-const port = process.env.PORT || 3000;
-
-server.listen(port);
-console.log(`Listening on ${port}`);
+app.listen(app.get('port'), () => {
+  console.log(`${app.locals.title} is running on ${app.get('port')}`)
+})
