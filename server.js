@@ -11,3 +11,7 @@ server.on('request', (request, response) => {
   response.write('Hello World');
   response.end();
 });
+
+// app.locals.folders = []
+// folder = { id: 1, name: food }
+// app.locals.folders.push.(folder)
