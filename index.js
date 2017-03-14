@@ -1,20 +1,29 @@
-const folderArray = [];
 const $folderContainer = $('.folder-container');
+
+const folderArray = [];
+
+$('.folder-input').focus();
 
 $('.folder-submit').on('click', () => {
   let $folderInput = $('.folder-input').val();
   addFolderToList($folderInput);
   $('.folder-input').val('');
-  createFolder();
 })
 
 const addFolderToList = (folder) => {
-  $('.folder-container').append(`<div>${folder}</div>`);
+  folderArray.push(folder);
+  console.log(folderArray);
+  $('.folder-container').append(`<button class="folder-button">${folder}</button>`);
 }
 
-createFolder = (folder) => {
+$('.folder-container').on('click', '.folder-button', () => {
+  $('.url-section').children().length === 0 ? createUrlSection() : null;
+})
+
+const createUrlSection = () => {
   $('.url-section').prepend(`<h2>URL's</h2>
   <input type="text-input" placeholder="URL Name" class="input"></input>
-  <button class="url-button button" type="button">Add URL</button>
-  <div class="url-container"></div>`)
+  <button class="url-button button" type="button">Add URL</button>`)
 }
+
+// <div class="url-container"></div>`
