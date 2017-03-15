@@ -34,7 +34,7 @@ app.locals.urls = [
   }
 ]
 
-app.get('/*', (request, response) => {
+app.get('/', (request, response) => {
   fs.readFile(`${__dirname}/index.html`, (err, file) => {
     response.send(file)
   })
