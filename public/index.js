@@ -1,19 +1,9 @@
 const $folderContainer = $('.folder-container');
 
 const folderArray = [];
+let clickedFolder;
 
 $('document').ready( () => loadInitialFolders())
-
-const loadInitialFolders = () => {
-  fetch(`/api/v1/folders`, {
-    method: 'GET',
-  })
-  .then(response => response.json()).then(data => {
-    renderFolders(data)
-  })
-  .catch(err => 'err')
-}
-
 $('.folder-input').focus();
 
 $('.folder-submit').on('click', () => {
@@ -21,6 +11,41 @@ $('.folder-submit').on('click', () => {
   addFolderToList($folderName);
   $('.folder-input').val('');
 })
+
+$('.folder-container').on('click', '.folder-button', (e) => {
+  clickedFolder = e.target.id;
+  $('.url-container').children().remove()
+  loadInitialUrls(clickedFolder)
+})
+
+$('.url-button').on('click', () => {
+  let url = $('.url-input').val();
+  postUrl(url)
+  $('.url-input').val('');
+})
+
+const loadInitialFolders = () => {
+  fetch(`/api/v1/folders`, {
+    method: 'GET',
+  })
+  .then(response => response.json())
+  .then(data => {
+    renderFolders(data)
+  })
+  .catch(err => err)
+}
+
+//need to figure out how to just load the URLs that pertain to the clickedFolder
+const loadInitialUrls = (clickedFolder) => {
+  fetch(`/api/v1/urls`, {
+    method: 'GET',
+  })
+  .then(response => response.json())
+  .then(data => {
+    renderUrls(data, clickedFolder)
+  })
+  .catch(err => console.log('error', err))
+}
 
 const addFolderToList = (name) => {
   console.log('name', name)
@@ -32,33 +57,37 @@ const addFolderToList = (name) => {
     body: JSON.stringify({ name })
   })
   .then(response => response.json()).then(data => {
-    renderFolders([data[data.length - 1]])
+    renderFolders([data[data.length-1]])
+  })
+  .catch(err => 'err')
+}
+
+const postUrl = (url) => {
+  fetch(`/api/v1/urls`, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify({ folderId: clickedFolder, url })
+  })
+  .then(response => response.json()).then(data => {
+    renderUrls([data[data.length-1]])
   })
   .catch(err => 'err')
 }
 
 const renderFolders = (data) => {
-  console.log(data)
   data.map(obj => {
-    $('.folder-container').append(`<button class="folder-button">${obj.name}</button>`)
+    $('.folder-container').append(`<button class="folder-button" id=${obj.id}>${obj.name}</button>`)
   })
 }
 
-$('.folder-container').on('click', '.folder-button', () => {
-  $('.url-section').children().remove();
-  createUrlSection();
-})
-
-const createUrlSection = () => {
-  $('.url-section').prepend(`<h2>URL's</h2>
-  <input type="text-input" placeholder="URL Name" class="url-input input"></input>
-  <button class="url-button button" type="button">Add URL</button>
-  <div class="url-container"></div>`)
+const renderUrls = (data, clickedFolder) => {
+  if (clickedFolder) {
+    data = data.filter(obj => obj.folderId == clickedFolder)
+  }
+  console.log(data)
+  data.map(obj => {
+    $('.url-container').append(`<button class="shortenUrlBtn">${obj.shortenedUrl}</button>`)
+  })
 }
-
-$('.url-section').on('click', '.url-button', () => {
-  let container = $('.url-button').siblings('.url-container');
-  let input = $('.url-button').siblings('.url-input').val();
-  container.append(`<div>${input}</div>`);
-  $('.url-button').siblings('.url-input').val('');
-})

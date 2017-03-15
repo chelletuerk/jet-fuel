@@ -22,13 +22,13 @@ app.locals.folders = [
 app.locals.urls = [
   { folderId: 1,
     submitDate: '03142017',
-    numOfClicks: '3',
+    numOfClicks: 3,
     shortenedUrl: 'http://www.g.com',
     url: 'http://www.google.com',
   },
   { folderId: 2,
     submitDate: '03152017',
-    numOfClicks: '1',
+    numOfClicks: 1,
     shortenedUrl: 'http://www.a.com',
     url: 'http://www.amazon.com',
   }
@@ -67,5 +67,5 @@ app.post('/api/v1/urls', (request, response) => {
 })
 
 app.listen(app.get('port'), () => {
-  console.log(`${app.locals.title} is running on ${app.get('port')}`)
+  console.log(`Running on ${app.get('port')}`)
 })
