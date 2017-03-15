@@ -10,14 +10,6 @@ app.use(express.static('public'))
 
 app.set('port', process.env.PORT || 3000)
 
-var uri;
-
-if (process.env.NODE_ENV === 'production') {
-  uri = 'https://jet-fuel-url-shortener.herokuapp.com/'
-} else {
-  uri = 'http://localhost:3000'
-}
-
 app.locals.folders = [
   { id: 1,
     name: 'fruit'
