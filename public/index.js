@@ -30,7 +30,7 @@ $('.url-button').on('click', () => {
 })
 
 const validateURL = (url) => {
-  const urlRegex = /^(http|https)?:\/\/[a-zA-Z0-9-\.]+\.[a-z]{2,4}/
+  const urlRegex = /^(http|https)?:\/\/[w]{2,4}[a-zA-Z0-9-\.]+\.[a-z]{1,10}/
   return urlRegex.test(url);
 }
 
