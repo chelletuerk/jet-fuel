@@ -4,6 +4,25 @@ const folderArray = [];
 let clickedFolder;
 
 $('document').ready( () => loadInitialFolders())
+$('.folder-input').focus();
+
+$('.folder-submit').on('click', () => {
+  let $folderName = $('.folder-input').val();
+  addFolderToList($folderName);
+  $('.folder-input').val('');
+})
+
+$('.folder-container').on('click', '.folder-button', (e) => {
+  clickedFolder = e.target.id;
+  $('.url-container').children().remove()
+  loadInitialUrls(clickedFolder)
+})
+
+$('.url-button').on('click', () => {
+  let url = $('.url-input').val();
+  postUrl(url)
+  $('.url-input').val('');
+})
 
 const loadInitialFolders = () => {
   fetch(`http://localhost:3000/api/v1/folders`, {
@@ -15,13 +34,16 @@ const loadInitialFolders = () => {
   .catch(err => console.log('error', err))
 }
 
-$('.folder-input').focus();
-
-$('.folder-submit').on('click', () => {
-  let $folderName = $('.folder-input').val();
-  addFolderToList($folderName);
-  $('.folder-input').val('');
-})
+//need to figure out how to just load the URLs that pertain to the clickedFolder
+const loadInitialUrls = (clickedFolder) => {
+  fetch(`http://localhost:3000/api/v1/urls`, {
+    method: 'GET',
+  })
+  .then(response => response.json()).then(data => {
+    renderUrls(data, clickedFolder)
+  })
+  .catch(err => console.log('error', err))
+}
 
 const addFolderToList = (name) => {
   console.log('name', name)
@@ -38,22 +60,6 @@ const addFolderToList = (name) => {
   .catch(err => console.log('error', err))
 }
 
-const renderFolders = (data) => {
-  data.map(obj => {
-    $('.folder-container').append(`<button class="folder-button" id=${obj.id}>${obj.name}</button>`)
-  })
-}
-
-$('.folder-button').on('click', (e) => {
-  clickedFolder = e.target.id;
-})
-
-$('.url-button').on('click', () => {
-  let url = $('.url-input').val();
-  postUrl(url)
-  $('.url-input').val('');
-})
-
 const postUrl = (url) => {
   fetch(`http://localhost:3000/api/v1/urls`, {
     headers: {
@@ -63,12 +69,22 @@ const postUrl = (url) => {
     body: JSON.stringify({ folderId: clickedFolder, url })
   })
   .then(response => response.json()).then(data => {
-    renderUrls(data)
+    renderUrls([data[data.length-1]])
   })
   .catch(err => console.log('error', err))
 }
 
-const renderUrls = (data) => {
+const renderFolders = (data) => {
+  data.map(obj => {
+    $('.folder-container').append(`<button class="folder-button" id=${obj.id}>${obj.name}</button>`)
+  })
+}
+
+const renderUrls = (data, clickedFolder) => {
+  if (clickedFolder) {
+    data = data.filter(obj => obj.folderId == clickedFolder)
+  }
+  console.log(data)
   data.map(obj => {
     $('.url-container').append(`<button class="shortenUrlBtn">${obj.shortenedUrl}</button>`)
   })
