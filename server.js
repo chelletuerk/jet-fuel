@@ -10,6 +10,14 @@ app.use(express.static('public'))
 
 app.set('port', process.env.PORT || 3000)
 
+var uri;
+
+if (process.env.NODE_ENV === 'production') {
+  uri = 'https://jet-fuel-url-shortener.herokuapp.com/'
+} else {
+  uri = 'http://localhost:3000'
+}
+
 app.locals.folders = [
   { id: 1,
     name: 'fruit'
@@ -24,17 +32,19 @@ app.locals.urls = [
     submitDate: '03142017',
     numOfClicks: '3',
     shortenedUrl: 'http://www.g.com',
-    url: 'http://www.google.com'
+    url: 'http://www.google.com',
+    uri: uri,
   },
   { folderId: 2,
     submitDate: '03152017',
     numOfClicks: '1',
     shortenedUrl: 'http://www.a.com',
-    url: 'http://www.amazon.com'
+    url: 'http://www.amazon.com',
+    uri: uri,
   }
 ]
 
-app.get('/', (request, response) => {
+app.get('/*', (request, response) => {
   fs.readFile(`${__dirname}/index.html`, (err, file) => {
     response.send(file)
   })
