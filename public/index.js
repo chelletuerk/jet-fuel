@@ -12,7 +12,7 @@ $('.folder-submit').on('click', () => {
 
 const addFolderToList = (name) => {
   console.log('name', name)
-  fetch(`http://localhost:3000/api/v1/folders`, {
+  fetch(`https://localhost:3000/api/v1/folders`, {
     headers: {
       'Content-Type': 'application/json'
     },
