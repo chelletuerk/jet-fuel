@@ -28,10 +28,11 @@ const loadInitialFolders = () => {
   fetch(`/api/v1/folders`, {
     method: 'GET',
   })
-  .then(response => response.json()).then(data => {
+  .then(response => response.json())
+  .then(data => {
     renderFolders(data)
   })
-  .catch(err => console.log('error', err))
+  .catch(err => err)
 }
 
 //need to figure out how to just load the URLs that pertain to the clickedFolder
@@ -39,7 +40,8 @@ const loadInitialUrls = (clickedFolder) => {
   fetch(`/api/v1/urls`, {
     method: 'GET',
   })
-  .then(response => response.json()).then(data => {
+  .then(response => response.json())
+  .then(data => {
     renderUrls(data, clickedFolder)
   })
   .catch(err => console.log('error', err))
@@ -57,7 +59,7 @@ const addFolderToList = (name) => {
   .then(response => response.json()).then(data => {
     renderFolders([data[data.length-1]])
   })
-  .catch(err => console.log('error', err))
+  .catch(err => 'err')
 }
 
 const postUrl = (url) => {
@@ -71,7 +73,7 @@ const postUrl = (url) => {
   .then(response => response.json()).then(data => {
     renderUrls([data[data.length-1]])
   })
-  .catch(err => console.log('error', err))
+  .catch(err => 'err')
 }
 
 const renderFolders = (data) => {
