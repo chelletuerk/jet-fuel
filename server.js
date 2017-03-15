@@ -24,17 +24,17 @@ app.locals.urls = [
     submitDate: '03142017',
     numOfClicks: '3',
     shortenedUrl: 'http://www.g.com',
-    url: 'http://www.google.com'
+    url: 'http://www.google.com',
   },
   { folderId: 2,
     submitDate: '03152017',
     numOfClicks: '1',
     shortenedUrl: 'http://www.a.com',
-    url: 'http://www.amazon.com'
+    url: 'http://www.amazon.com',
   }
 ]
 
-app.get('/', (request, response) => {
+app.get('/*', (request, response) => {
   fs.readFile(`${__dirname}/index.html`, (err, file) => {
     response.send(file)
   })

@@ -5,12 +5,13 @@ const folderArray = [];
 $('document').ready( () => loadInitialFolders())
 
 const loadInitialFolders = () => {
-  fetch(`http://localhost:3000/api/v1/folders`, {
+  fetch(`/api/v1/folders`, {
     method: 'GET',
   })
   .then(response => response.json()).then(data => {
     renderFolders(data)
   })
+  .catch(err => 'err')
 }
 
 $('.folder-input').focus();
@@ -23,7 +24,8 @@ $('.folder-submit').on('click', () => {
 
 const addFolderToList = (name) => {
   console.log('name', name)
-  fetch(`http://localhost:3000/api/v1/folders`, {
+  fetch(`/api/v1/folders`, {
+
     headers: {
       'Content-Type': 'application/json'
     },
@@ -31,9 +33,9 @@ const addFolderToList = (name) => {
     body: JSON.stringify({ name })
   })
   .then(response => response.json()).then(data => {
-    renderFolders(data)
+    renderFolders([data[data.length - 1]])
   })
-  .catch(err => console.log('error', err))
+  .catch(err => 'err')
 }
 
 const renderFolders = (data) => {
