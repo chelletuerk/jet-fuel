@@ -24,14 +24,14 @@ app.locals.urls = [
     folderId: 1,
     timestamp: '03142017',
     numOfClicks: 3,
-    shortenedUrl: 'http://www.g.com',
+    shortenedUrl: 'google1',
     url: 'http://www.google.com',
   },
   { id: 2,
     folderId: 2,
     timestamp: '03152017',
     numOfClicks: 1,
-    shortenedUrl: 'http://www.a.com',
+    shortenedUrl: 'amazon2',
     url: 'http://www.amazon.com',
   }
 ]
@@ -81,4 +81,13 @@ app.patch('/api/v1/urls/:id', (request, response) => {
 
 app.listen(app.get('port'), () => {
   console.log(`Running on ${app.get('port')}`)
+})
+
+app.get('/:shortUrl', (request, response) => {
+  const { shortUrl } = request.params
+  let redirectedObj = app.locals.urls.find(obj => {
+    return obj.shortenedUrl === shortUrl
+  })
+  const url = redirectedObj.url
+  response.redirect(url)
 })

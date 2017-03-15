@@ -97,7 +97,7 @@ const renderUrls = (data, clickedFolder) => {
   }
   data.map(obj => {
     $('.url-container').append(`<a href=${obj.url} id=${obj.id} numOfClicks=${obj.numOfClicks} class="shortenUrlBtn" target="_blank">${obj.shortenedUrl}</a><br/>
-    <p>${obj.timestamp}</p><p>${obj.numOfClicks}</p>`)
+    <p>${obj.timestamp}</p><p>${obj.numOfClicks}</p><p>${obj.url}</p>`)
   })
 }
 
