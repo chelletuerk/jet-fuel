@@ -60,7 +60,7 @@ app.post('/api/v1/urls', (request, response) => {
   const { folderId, url } = request.body
   const submitDate = Date.now()
   const numOfClicks = 0
-  const shortenedUrl = url.split('//')[1]
+  const shortenedUrl = `${url.split('.')[1]}${app.locals.urls.length}`;
 
   app.locals.urls.push({ folderId, submitDate, numOfClicks, shortenedUrl, url })
   response.json(app.locals.urls)
