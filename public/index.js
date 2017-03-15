@@ -23,7 +23,7 @@ $('.folder-submit').on('click', () => {
 
 const addFolderToList = (name) => {
   console.log('name', name)
-  fetch(`https://localhost:3000/api/v1/folders`, {
+  fetch(`http://localhost:3000/api/v1/folders`, {
     headers: {
       'Content-Type': 'application/json'
     },
@@ -31,7 +31,7 @@ const addFolderToList = (name) => {
     body: JSON.stringify({ name })
   })
   .then(response => response.json()).then(data => {
-    renderFolders(data)
+    renderFolders([data[data.length - 1]])
   })
   .catch(err => console.log('error', err))
 }
