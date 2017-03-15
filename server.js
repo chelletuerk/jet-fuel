@@ -79,15 +79,17 @@ app.patch('/api/v1/urls/:id', (request, response) => {
   response.json(app.locals.urls)
 })
 
-app.listen(app.get('port'), () => {
-  console.log(`Running on ${app.get('port')}`)
-})
-
 app.get('/:shortUrl', (request, response) => {
   const { shortUrl } = request.params
   let redirectedObj = app.locals.urls.find(obj => {
     return obj.shortenedUrl === shortUrl
   })
   const url = redirectedObj.url
+  redirectedObj.numOfClicks++
+  console.log(app.locals.urls)
   response.redirect(url)
+})
+
+app.listen(app.get('port'), () => {
+  console.log(`Running on ${app.get('port')}`)
 })

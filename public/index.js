@@ -96,23 +96,19 @@ const renderUrls = (data, clickedFolder) => {
     data = data.filter(obj => obj.folderId == clickedFolder)
   }
   data.map(obj => {
-    $('.url-container').append(`<a href=${obj.url} id=${obj.id} numOfClicks=${obj.numOfClicks} class="shortenUrlBtn" target="_blank">${obj.shortenedUrl}</a><br/>
+    $('.url-container').append(`<a id=${obj.id} href=${obj.url} class="shortenUrlBtn">${obj.shortenedUrl}</a><br/>
     <p>${obj.timestamp}</p><p>${obj.numOfClicks}</p><p>${obj.url}</p>`)
   })
 }
 
 $('.url-container').on('click', '.shortenUrlBtn', (e) => {
-  const id = e.target.id
-  const numOfClicks = e.target.numOfClicks++
-  fetch(`/api/v1/urls/${id}`, {
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    method: 'PATCH',
-    body: JSON.stringify({ numOfClicks })
+  const shortUrl = e.target.innerHTML
+  fetch(`/${shortUrl}`, {
+    mode: 'no-cors',
+    method: 'GET',
   })
   .then(response => response.json()).then(data => {
-    console.log(data);
+    $(location).prop(data);
   })
   .catch(err => 'err')
 })
