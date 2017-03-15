@@ -2,6 +2,17 @@ const $folderContainer = $('.folder-container');
 
 const folderArray = [];
 
+$('document').ready( () => loadInitialFolders())
+
+const loadInitialFolders = () => {
+  fetch(`http://localhost:3000/api/v1/folders`, {
+    method: 'GET',
+  })
+  .then(response => response.json()).then(data => {
+    renderFolders(data)
+  })
+}
+
 $('.folder-input').focus();
 
 $('.folder-submit').on('click', () => {
@@ -30,8 +41,6 @@ const renderFolders = (data) => {
   data.map(obj => {
     $('.folder-container').append(`<button class="folder-button">${obj.name}</button>`)
   })
-  // $('.folder-container').append(`<button class="folder-button">${folder}</button>`);
-
 }
 
 $('.folder-container').on('click', '.folder-button', () => {
