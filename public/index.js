@@ -1,6 +1,7 @@
 const $folderContainer = $('.folder-container');
 
 const folderArray = [];
+let clickedFolder;
 
 $('document').ready( () => loadInitialFolders())
 
@@ -11,6 +12,7 @@ const loadInitialFolders = () => {
   .then(response => response.json()).then(data => {
     renderFolders(data)
   })
+  .catch(err => console.log('error', err))
 }
 
 $('.folder-input').focus();
@@ -31,33 +33,43 @@ const addFolderToList = (name) => {
     body: JSON.stringify({ name })
   })
   .then(response => response.json()).then(data => {
-    renderFolders(data)
+    renderFolders([data[data.length-1]])
   })
   .catch(err => console.log('error', err))
 }
 
 const renderFolders = (data) => {
-  console.log(data)
   data.map(obj => {
-    $('.folder-container').append(`<button class="folder-button">${obj.name}</button>`)
+    $('.folder-container').append(`<button class="folder-button" id=${obj.id}>${obj.name}</button>`)
   })
 }
 
-$('.folder-container').on('click', '.folder-button', () => {
-  $('.url-section').children().remove();
-  createUrlSection();
+$('.folder-button').on('click', (e) => {
+  clickedFolder = e.target.id;
 })
 
-const createUrlSection = () => {
-  $('.url-section').prepend(`<h2>URL's</h2>
-  <input type="text-input" placeholder="URL Name" class="url-input input"></input>
-  <button class="url-button button" type="button">Add URL</button>
-  <div class="url-container"></div>`)
+$('.url-button').on('click', () => {
+  let url = $('.url-input').val();
+  postUrl(url)
+  $('.url-input').val('');
+})
+
+const postUrl = (url) => {
+  fetch(`http://localhost:3000/api/v1/urls`, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify({ folderId: clickedFolder, url })
+  })
+  .then(response => response.json()).then(data => {
+    renderUrls(data)
+  })
+  .catch(err => console.log('error', err))
 }
 
-$('.url-section').on('click', '.url-button', () => {
-  let container = $('.url-button').siblings('.url-container');
-  let input = $('.url-button').siblings('.url-input').val();
-  container.append(`<div>${input}</div>`);
-  $('.url-button').siblings('.url-input').val('');
-})
+const renderUrls = (data) => {
+  data.map(obj => {
+    $('.url-container').append(`<button class="shortenUrlBtn">${obj.shortenedUrl}</button>`)
+  })
+}
