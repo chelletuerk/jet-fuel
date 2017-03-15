@@ -20,7 +20,7 @@ $('.folder-container').on('click', '.folder-button', (e) => {
 
 $('.url-button').on('click', () => {
   const url = $('.url-input').val();
-  const isValid = validateURL(url);
+  const isValid = validateUrl(url);
   if (!isValid) {
     alert("Your URL isn't valid. Try something like \n http://www.ebaumsworld.com/");
     return;
@@ -29,7 +29,7 @@ $('.url-button').on('click', () => {
   $('.url-input').val('');
 })
 
-const validateURL = (url) => {
+const validateUrl = (url) => {
   const urlRegex = /^(http|https)?:\/\/[w]{2,4}[a-zA-Z0-9-\.]+\.[a-z]{1,10}/
   return urlRegex.test(url);
 }
@@ -96,6 +96,23 @@ const renderUrls = (data, clickedFolder) => {
     data = data.filter(obj => obj.folderId == clickedFolder)
   }
   data.map(obj => {
-    $('.url-container').append(`<a href=${obj.url} class="shortenUrlBtn" target="_blank">${obj.shortenedUrl}</a>`)
+    $('.url-container').append(`<a href=${obj.url} id=${obj.id} numOfClicks=${obj.numOfClicks} class="shortenUrlBtn" target="_blank">${obj.shortenedUrl}</a><br/>
+    <p>${obj.timestamp}</p><p>${obj.numOfClicks}</p>`)
   })
 }
+
+$('.url-container').on('click', '.shortenUrlBtn', (e) => {
+  const id = e.target.id
+  const numOfClicks = e.target.numOfClicks++
+  fetch(`/api/v1/urls/${id}`, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'PATCH',
+    body: JSON.stringify({ numOfClicks })
+  })
+  .then(response => response.json()).then(data => {
+    console.log(data);
+  })
+  .catch(err => 'err')
+})

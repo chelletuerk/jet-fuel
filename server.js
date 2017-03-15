@@ -20,14 +20,16 @@ app.locals.folders = [
 ]
 
 app.locals.urls = [
-  { folderId: 1,
-    submitDate: '03142017',
+  { id: 1,
+    folderId: 1,
+    timestamp: '03142017',
     numOfClicks: 3,
     shortenedUrl: 'http://www.g.com',
     url: 'http://www.google.com',
   },
-  { folderId: 2,
-    submitDate: '03152017',
+  { id: 2,
+    folderId: 2,
+    timestamp: '03152017',
     numOfClicks: 1,
     shortenedUrl: 'http://www.a.com',
     url: 'http://www.amazon.com',
@@ -58,11 +60,22 @@ app.get('/api/v1/urls', (request, response) => {
 
 app.post('/api/v1/urls', (request, response) => {
   const { folderId, url } = request.body
-  const submitDate = Date.now()
+  const id = md5(url)
+  const timestamp = Date.now()
   const numOfClicks = 0
   const shortenedUrl = `${url.split('.')[1]}${app.locals.urls.length}`;
 
-  app.locals.urls.push({ folderId, submitDate, numOfClicks, shortenedUrl, url })
+  app.locals.urls.push({ folderId, timestamp, numOfClicks, shortenedUrl, url, id })
+  response.json(app.locals.urls)
+})
+
+app.patch('/api/v1/urls/:id', (request, response) => {
+  const { id } = request.params
+  const { numOfClicks } = request.body
+  const selectedUrl = app.locals.urls.find(obj => obj.id == id)
+  selectedUrl.numOfClicks = numOfClicks
+
+  if (!selectedUrl) {return response.sendStatus(404)}
   response.json(app.locals.urls)
 })
 
