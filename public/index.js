@@ -95,8 +95,7 @@ const renderUrls = (data, clickedFolder) => {
   if (clickedFolder) {
     data = data.filter(obj => obj.folderId == clickedFolder)
   }
-  console.log(data)
   data.map(obj => {
-    $('.url-container').append(`<button class="shortenUrlBtn">${obj.shortenedUrl}</button>`)
+    $('.url-container').append(`<a href=${obj.url} class="shortenUrlBtn" target="_blank">${obj.shortenedUrl}</a>`)
   })
 }
