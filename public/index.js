@@ -5,15 +5,33 @@ const folderArray = [];
 $('.folder-input').focus();
 
 $('.folder-submit').on('click', () => {
-  let $folderInput = $('.folder-input').val();
-  addFolderToList($folderInput);
+  let $folderName = $('.folder-input').val();
+  addFolderToList($folderName);
   $('.folder-input').val('');
 })
 
-const addFolderToList = (folder) => {
-  folderArray.push(folder);
-  console.log(folderArray);
-  $('.folder-container').append(`<button class="folder-button">${folder}</button>`);
+const addFolderToList = (name) => {
+  console.log('name', name)
+  fetch(`http://localhost:3000/api/v1/folders`, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify({ name })
+  })
+  .then(response => response.json()).then(data => {
+    renderFolders(data)
+  })
+  .catch(err => console.log('error', err))
+}
+
+const renderFolders = (data) => {
+  console.log(data)
+  data.map(obj => {
+    $('.folder-container').append(`<button class="folder-button">${obj.name}</button>`)
+  })
+  // $('.folder-container').append(`<button class="folder-button">${folder}</button>`);
+
 }
 
 $('.folder-container').on('click', '.folder-button', () => {
