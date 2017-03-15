@@ -25,6 +25,7 @@ $('.folder-submit').on('click', () => {
 const addFolderToList = (name) => {
   console.log('name', name)
   fetch(`/api/v1/folders`, {
+
     headers: {
       'Content-Type': 'application/json'
     },
