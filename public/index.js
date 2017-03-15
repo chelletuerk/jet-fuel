@@ -7,7 +7,7 @@ $('document').ready( () => loadInitialFolders())
 $('.folder-input').focus();
 
 $('.folder-submit').on('click', () => {
-  let $folderName = $('.folder-input').val();
+  const $folderName = $('.folder-input').val();
   addFolderToList($folderName);
   $('.folder-input').val('');
 })
@@ -19,10 +19,20 @@ $('.folder-container').on('click', '.folder-button', (e) => {
 })
 
 $('.url-button').on('click', () => {
-  let url = $('.url-input').val();
+  const url = $('.url-input').val();
+  const isValid = validateURL(url);
+  if (!isValid) {
+    alert("Your URL isn't valid. Try something like \n http://www.ebaumsworld.com/");
+    return;
+  }
   postUrl(url)
   $('.url-input').val('');
 })
+
+const validateURL = (url) => {
+  const urlRegex = /^(http|https)?:\/\/[a-zA-Z0-9-\.]+\.[a-z]{2,4}/
+  return urlRegex.test(url);
+}
 
 const loadInitialFolders = () => {
   fetch(`/api/v1/folders`, {
@@ -35,7 +45,6 @@ const loadInitialFolders = () => {
   .catch(err => err)
 }
 
-//need to figure out how to just load the URLs that pertain to the clickedFolder
 const loadInitialUrls = (clickedFolder) => {
   fetch(`/api/v1/urls`, {
     method: 'GET',
