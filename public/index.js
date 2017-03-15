@@ -25,7 +25,7 @@ $('.url-button').on('click', () => {
 })
 
 const loadInitialFolders = () => {
-  fetch(`http://localhost:3000/api/v1/folders`, {
+  fetch(`/api/v1/folders`, {
     method: 'GET',
   })
   .then(response => response.json()).then(data => {
@@ -36,7 +36,7 @@ const loadInitialFolders = () => {
 
 //need to figure out how to just load the URLs that pertain to the clickedFolder
 const loadInitialUrls = (clickedFolder) => {
-  fetch(`http://localhost:3000/api/v1/urls`, {
+  fetch(`/api/v1/urls`, {
     method: 'GET',
   })
   .then(response => response.json()).then(data => {
@@ -47,7 +47,7 @@ const loadInitialUrls = (clickedFolder) => {
 
 const addFolderToList = (name) => {
   console.log('name', name)
-  fetch(`http://localhost:3000/api/v1/folders`, {
+  fetch(`/api/v1/folders`, {
     headers: {
       'Content-Type': 'application/json'
     },
@@ -61,7 +61,7 @@ const addFolderToList = (name) => {
 }
 
 const postUrl = (url) => {
-  fetch(`http://localhost:3000/api/v1/urls`, {
+  fetch(`/api/v1/urls`, {
     headers: {
       'Content-Type': 'application/json'
     },
