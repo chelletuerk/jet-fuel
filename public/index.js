@@ -5,7 +5,7 @@ const folderArray = [];
 $('document').ready( () => loadInitialFolders())
 
 const loadInitialFolders = () => {
-  fetch(`https://localhost:3000/api/v1/folders`, {
+  fetch(`http://localhost:3000/api/v1/folders`, {
     method: 'GET',
   })
   .then(response => response.json()).then(data => {
@@ -23,7 +23,7 @@ $('.folder-submit').on('click', () => {
 
 const addFolderToList = (name) => {
   console.log('name', name)
-  fetch(`https://localhost:3000/api/v1/folders`, {
+  fetch(`http://localhost:3000/api/v1/folders`, {
     headers: {
       'Content-Type': 'application/json'
     },
