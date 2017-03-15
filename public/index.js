@@ -11,9 +11,7 @@ const loadInitialFolders = () => {
   .then(response => response.json()).then(data => {
     renderFolders(data)
   })
-  .catch(err => {
-    throw new Error(err)
-  })
+  .catch(err => 'err')
 }
 
 $('.folder-input').focus();
@@ -36,9 +34,7 @@ const addFolderToList = (name) => {
   .then(response => response.json()).then(data => {
     renderFolders([data[data.length - 1]])
   })
-  .catch(err => {
-    throw new Error(err)
-  })
+  .catch(err => 'err')
 }
 
 const renderFolders = (data) => {
