@@ -4,6 +4,10 @@ const app = express()
 const md5 = require('md5')
 const fs = require('fs')
 
+const environment = process.env.NODE_ENV || 'development';
+const configuration = require('./knexfile')[environment];
+const database = require('knex')(configuration);
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static('public'))
@@ -43,7 +47,13 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/v1/folders', (request, response) => {
-  response.send(app.locals.folders)
+  database('folders').select()
+  .then((folders) => {
+    response.status(200).json(folders)
+  })
+  .catch((error) => {
+    console.error('something is wrong with the database')
+  })
 })
 
 app.post('/api/v1/folders', (request, response) => {
@@ -55,7 +65,13 @@ app.post('/api/v1/folders', (request, response) => {
 })
 
 app.get('/api/v1/urls', (request, response) => {
-  response.send(app.locals.urls)
+  database('url').select()
+  .then((urls) => {
+    response.status(200).json(urls)
+  })
+  .catch((error) => {
+    console.error('something is wrong with the database')
+  })
 })
 
 app.post('/api/v1/urls', (request, response) => {
@@ -81,14 +97,25 @@ app.patch('/api/v1/urls/:id', (request, response) => {
 
 app.get('/:shortUrl', (request, response) => {
   const { shortUrl } = request.params
-  let redirectedObj = app.locals.urls.find(obj => {
-    return obj.shortenedUrl === shortUrl
+  database('urls').where('shortenedUrl', request.params.shortUrl).select()
+  .then((urls) => {
+    response.status(200).json(urls)
   })
-  const url = redirectedObj.url
-  redirectedObj.numOfClicks++
-  console.log(app.locals.urls)
-  response.redirect(url)
+  .catch((error) => {
+    console.error('something is wrong with the database')
+  })
 })
+
+
+// 
+//   let redirectedObj = app.locals.urls.find(obj => {
+//     return obj.shortenedUrl === shortUrl
+//   })
+//   const url = redirectedObj.url
+//   redirectedObj.numOfClicks++
+//   console.log(app.locals.urls)
+//   response.redirect(url)
+// })
 
 app.listen(app.get('port'), () => {
   console.log(`Running on ${app.get('port')}`)
