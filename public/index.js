@@ -7,6 +7,10 @@ let currentUrls;
 $('document').ready( () => loadInitialFolders())
 $('.folder-input').focus();
 
+$('.folder-input').on('input', (e) => {
+  e.target.value.length > 0 ? $('.folder-submit').prop('disabled', false) : $('.folder-submit').prop('disabled', true);
+})
+
 $('.folder-submit').on('click', () => {
   const $folderName = $('.folder-input').val();
   addFolderToList($folderName);

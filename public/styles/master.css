@@ -16,6 +16,10 @@ button:hover {
   background-color: #64dbd0;
 }
 
+button:disabled {
+  background-color: #a8a8a8;
+}
+
 .main-section {
   display: flex;
   flex-direction: row;
