@@ -1,16 +1,79 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,700,500);
+
 body {
   background-color: #D5DFE2;
+  font-family: 'Roboto', sans-serif;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  text-decoration: none;
+}
+
+button:hover {
+  background-color: #64dbd0;
+}
+
+.main-section {
   display: flex;
+  flex-direction: row;
+  text-align: center;
+}
+
+.folder-section {
+  width: 50%;
+}
+
+.url-section {
+  width: 50%;
 }
 
 h1 {
   color: #011627;
   font-size: 70px;
   text-align: center;
+  padding: 20px;
+  background-color: #2ec4b6;
 }
 
+h2 {
+  font-size: 32px;
+  margin: 10px;
+}
 
+.folder-submit {
+  margin: 5px;
+}
 
+.folder-input {
+  margin: 5px;
+}
+
+.folder-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.folder-button {
+  margin: 5px auto;
+  width: 25%;
+  background-color: #2ec4b6;
+
+}
+
+.folder-button:hover {
+  background-color: #64dbd0;
+}
+
+.url-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 70%;
+  margin: 10px auto;
+}
 
 
 /*#011627

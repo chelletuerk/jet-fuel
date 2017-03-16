@@ -15,9 +15,15 @@ $('.folder-submit').on('click', () => {
 
 $('.folder-container').on('click', '.folder-button', (e) => {
   clickedFolder = e.target.id;
+  styleFolderOnClick(e)
   $('.url-container').children().remove()
   loadInitialUrls(clickedFolder)
 })
+
+const styleFolderOnClick = (e) => {
+  $(e.target).siblings().removeAttr('style');
+  $(e.target).css('background-color', '#ff8811');
+}
 
 $('.url-button').on('click', () => {
   const url = $('.url-input').val();
