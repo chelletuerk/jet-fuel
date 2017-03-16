@@ -29,6 +29,12 @@ $('.url-button').on('click', () => {
   $('.url-input').val('');
 })
 
+$('.sort-date').on('click', () => {
+  $('.url-container').find('.url-wrapper').sort((a, b) => {
+    return a.children.('.url-timestamp').innerHTML - b.children.('.url-timestamp').innerHTML
+  })
+})
+
 const validateUrl = (url) => {
   const urlRegex = /^(http|https)?:\/\/[w]{2,4}[a-zA-Z0-9-\.]+\.[a-z]{1,10}/
   return urlRegex.test(url);
@@ -87,7 +93,10 @@ const postUrl = (url) => {
 
 const renderFolders = (data) => {
   data.map(obj => {
-    $('.folder-container').append(`<button class="folder-button" id=${obj.id}>${obj.name}</button>`)
+    $('.folder-container').append(`
+      <button class="folder-button" id=${obj.id}>${obj.name}
+      </button>
+      `)
   })
 }
 
@@ -96,8 +105,16 @@ const renderUrls = (data, clickedFolder) => {
     data = data.filter(obj => obj.folderId == clickedFolder)
   }
   data.map(obj => {
-    $('.url-container').append(`<a id=${obj.id} href=${obj.url} class="shortenUrlBtn">${obj.shortenedUrl}</a><br/>
-    <p>${obj.timestamp}</p><p>${obj.numOfClicks}</p><p>${obj.url}</p>`)
+    $('.url-container').append(`
+      <div class="url-wrapper">
+        <a id=${obj.id} href=${obj.url} class="shortenUrlBtn">${obj.shortenedUrl}
+        </a>
+        <br/>
+        <p class="url-timestamp">${obj.timestamp}</p>
+        <p>${obj.numOfClicks}</p>
+        <p>${obj.url}</p>
+      </div>
+      `)
   })
 }
 
