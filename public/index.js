@@ -5,6 +5,7 @@ let clickedFolder;
 let currentUrls;
 
 $('document').ready( () => loadInitialFolders())
+$('.url-section').children().attr('disabled', true);
 $('.folder-input').focus();
 
 $('.folder-input').on('input', (e) => {
@@ -20,6 +21,7 @@ $('.folder-submit').on('click', () => {
 $('.folder-container').on('click', '.folder-button', (e) => {
   clickedFolder = e.target.id;
   styleFolderOnClick(e)
+  $('.url-section').children().attr('disabled', false);
   $('.url-container').children().remove()
   loadInitialUrls(clickedFolder)
 })
