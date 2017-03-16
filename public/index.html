@@ -7,22 +7,24 @@
     <title>Jet Fuel</title>
   </head>
   <body>
-    <h1>Jet Fuel</h1> <hr>
-    <section class="folder-section">
-      <h2>Folders</h2>
-      <input type="text-input" placeholder="Folder Name" class="folder-input"></input>
-      <button class="folder-submit button" type="button">Add Folder</button>
-      <div class="folder-container"></div>
-    </section>
-    <section class="url-section">
-      <h2>URL's</h2>
-      <input type="text-input" placeholder="URL Name" class="url-input input"></input>
-      <button class="url-button button" type="button">Shorten URL</button>
-      <button class="sort-date button" type="button">Sort By Date</button>
-      <button class="sort-clicks button" type="button">Sort By Visits</button>
-      <div class="url-container"></div>
-    </section>
-    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
-    <script src="./index.js"></script>
+    <h1>Jet Fuel</h1>
+    <div class='main-section'>
+      <section class="folder-section">
+        <h2>Folders</h2>
+        <input type="text-input" placeholder="Folder Name" class="folder-input"></input>
+        <button class="folder-submit button"  disabled="true" type="button">Add Folder</button>
+        <div class="folder-container"></div>
+      </section>
+      <section class="url-section">
+        <h2>URL's</h2>
+        <input type="text-input" placeholder="URL Name" class="url-input input"></input>
+        <button class="url-button button" type="button">Shorten URL</button>
+        <button class="sort-date button" type="button">Sort By Date</button>
+        <button class="sort-clicks button" type="button">Sort By Visits</button>
+        <div class="url-container"></div>
+      </section>
+      <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+      <script src="./index.js"></script>
+    </div>
   </body>
 </html>
