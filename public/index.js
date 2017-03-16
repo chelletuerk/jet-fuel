@@ -2,6 +2,7 @@ const $folderContainer = $('.folder-container');
 
 const folderArray = [];
 let clickedFolder;
+let currentUrls;
 
 $('document').ready( () => loadInitialFolders())
 $('.folder-input').focus();
@@ -30,9 +31,19 @@ $('.url-button').on('click', () => {
 })
 
 $('.sort-date').on('click', () => {
-  $('.url-container').find('.url-wrapper').sort((a, b) => {
-    return a.children.('.url-timestamp').innerHTML - b.children.('.url-timestamp').innerHTML
+  currentUrls.sort((a,b) => {
+    return a.timestamp > b.timestamp ? a.timestamp - b.timestamp : b.timestamp - a.timestamp;
   })
+  $('.url-container').children().remove()
+  renderUrls(currentUrls)
+})
+
+$('.sort-clicks').on('click', () => {
+  currentUrls.sort((a,b) => {
+    return a.numOfClicks - b.numOfClicks;
+  })
+  $('.url-container').children().remove()
+  renderUrls(currentUrls)
 })
 
 const validateUrl = (url) => {
@@ -51,12 +62,13 @@ const loadInitialFolders = () => {
   .catch(err => err)
 }
 
-const loadInitialUrls = (clickedFolder) => {
+const loadInitialUrls = () => {
   fetch(`/api/v1/urls`, {
     method: 'GET',
   })
   .then(response => response.json())
   .then(data => {
+
     renderUrls(data, clickedFolder)
   })
   .catch(err => console.log('error', err))
@@ -103,6 +115,7 @@ const renderFolders = (data) => {
 const renderUrls = (data, clickedFolder) => {
   if (clickedFolder) {
     data = data.filter(obj => obj.folderId == clickedFolder)
+    currentUrls = data
   }
   data.map(obj => {
     $('.url-container').append(`

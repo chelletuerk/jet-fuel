@@ -1,5 +1,6 @@
 body {
   background-color: #D5DFE2;
+  display: flex;
 }
 
 h1 {
