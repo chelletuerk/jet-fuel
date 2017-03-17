@@ -118,3 +118,5 @@ app.put('/:shortUrl', (request, response) => {
 app.listen(app.get('port'), () => {
   console.log(`Running on ${app.get('port')}`)
 })
+
+module.exports = app;
