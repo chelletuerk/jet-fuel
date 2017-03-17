@@ -75,16 +75,6 @@ app.post('/api/v1/urls', (request, response) => {
   })
 })
 
-// app.patch('/api/v1/urls/:id', (request, response) => {
-//   const { id } = request.params
-//   const { numOfClicks } = request.body
-//   const selectedUrl = app.locals.urls.find(obj => obj.id == id)
-//   selectedUrl.numOfClicks = numOfClicks
-//
-//   if (!selectedUrl) {return response.sendStatus(404)}
-//   response.json(app.locals.urls)
-// })
-
 app.get('/:shortUrl', (request, response) => {
   const { shortUrl } = request.params;
   let longUrl;

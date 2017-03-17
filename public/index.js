@@ -166,7 +166,4 @@ $('.url-container').on('click', '.shortenUrlBtn', (e) => {
   fetch(`/${shortUrl}`, {
     method: 'PUT'
   })
-  .then(response => response.json()).then(data => {
-    console.log(data)
-  })
 })
