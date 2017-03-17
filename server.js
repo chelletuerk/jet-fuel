@@ -52,37 +52,54 @@ app.get('/api/v1/folders', (request, response) => {
     response.status(200).json(folders)
   })
   .catch((error) => {
-    console.error('something is wrong with the database')
+    console.error('error getting folders:', error)
   })
 })
 
 app.post('/api/v1/folders', (request, response) => {
   const { name } = request.body
-  const id = md5(name)
-
-  app.locals.folders.push({ id, name })
-  response.json(app.locals.folders)
+  const folder = { name };
+  database('folders').insert(folder)
+  .then(function() {
+    database('folders').select()
+            .then(function(folders) {
+              response.status(200).json(folders);
+            })
+            .catch(function(error) {
+              console.error('error posting folders:', error)
+            });
+  })
 })
 
 app.get('/api/v1/urls', (request, response) => {
-  database('url').select()
+  database('urls').select()
   .then((urls) => {
     response.status(200).json(urls)
   })
   .catch((error) => {
-    console.error('something is wrong with the database')
+    console.error('error getting URLs:', error)
   })
 })
 
 app.post('/api/v1/urls', (request, response) => {
   const { folderId, url } = request.body
   const id = md5(url)
-  const timestamp = Date.now()
+  // const timestamp = Date.now()
   const numOfClicks = 0
-  const shortenedUrl = `${url.split('.')[1]}${app.locals.urls.length}`;
+  const shortenedUrl = id.slice(0,5);
+  const urlObj = { folderId, numOfClicks, shortenedUrl, url, id }
 
-  app.locals.urls.push({ folderId, timestamp, numOfClicks, shortenedUrl, url, id })
-  response.json(app.locals.urls)
+  database('urls').insert(urlObj)
+  .then(function() {
+    database('urls').select()
+      .then(function(urls) {
+        console.log('here are the uuuuurrrrrlllssss',urls)
+        response.status(200).json(urls);
+      })
+      .catch(function(error) {
+        console.error('error posting URLs:', error)
+      });
+  })
 })
 
 app.patch('/api/v1/urls/:id', (request, response) => {
@@ -102,12 +119,12 @@ app.get('/:shortUrl', (request, response) => {
     response.status(200).json(urls)
   })
   .catch((error) => {
-    console.error('something is wrong with the database')
+    console.error('error getting short URLs:', error)
   })
 })
 
 
-// 
+//
 //   let redirectedObj = app.locals.urls.find(obj => {
 //     return obj.shortenedUrl === shortUrl
 //   })
