@@ -1,6 +1,6 @@
-const $folderContainer = $('.folder-container');
-
-const folderArray = [];
+// const $folderContainer = $('.folder-container');
+//
+// const folderArray = [];
 let clickedFolder;
 let currentUrls;
 let sortOrder = false
