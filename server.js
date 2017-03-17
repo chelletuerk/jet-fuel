@@ -112,14 +112,23 @@ app.patch('/api/v1/urls/:id', (request, response) => {
   response.json(app.locals.urls)
 })
 
-app.get('/:shortUrl', (request, response) => {
-  const { shortUrl } = request.params
-  database('urls').where('shortenedUrl', request.params.shortUrl).select()
-  .then((urls) => {
-    response.status(200).json(urls)
+app.put('/:shortUrl', (request, response) => {
+  const { shortUrl } = request.params;
+  let updatedClicks;
+
+  database('urls').where('shortenedUrl', shortUrl).select()
+  .then((url) => {
+    updatedClicks = (url[0].numOfClicks) + 1
+    debugger;
+  })
+  .then(() => {
+    database('urls').where('shortenedUrl',shortUrl).update({ numOfClicks: updatedClicks })
+  })
+  .then(() => {
+    response.status(200);
   })
   .catch((error) => {
-    console.error('error getting short URLs:', error)
+    console.error('error getting short URL:', error)
   })
 })
 
