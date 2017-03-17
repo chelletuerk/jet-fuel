@@ -3,6 +3,7 @@ const $folderContainer = $('.folder-container');
 const folderArray = [];
 let clickedFolder;
 let currentUrls;
+let sortOrder = false
 
 $('document').ready( () => loadInitialFolders())
 $('.url-section').children().attr('disabled', true);
@@ -43,20 +44,34 @@ $('.url-button').on('click', () => {
 })
 
 $('.sort-date').on('click', () => {
-  currentUrls.sort((a,b) => {
-    return a.timestamp > b.timestamp ? a.timestamp - b.timestamp : b.timestamp - a.timestamp;
-  })
   $('.url-container').children().remove()
-  renderUrls(currentUrls)
+  if (!sortOrder) {
+    renderUrls(downSort('timestamp'));
+    sortOrder = !sortOrder;
+  } else {
+    renderUrls(upSort('timestamp'));
+    sortOrder = !sortOrder;
+  }
 })
 
 $('.sort-clicks').on('click', () => {
-  currentUrls.sort((a,b) => {
-    return a.numOfClicks - b.numOfClicks;
-  })
   $('.url-container').children().remove()
-  renderUrls(currentUrls)
+  if (!sortOrder) {
+    renderUrls(downSort('numOfClicks'));
+    sortOrder = !sortOrder;
+  } else {
+    renderUrls(upSort('numOfClicks'));
+    sortOrder = !sortOrder;
+  }
 })
+
+function upSort(prop) {
+  return currentUrls.sort((a, b) => a[prop] > b[prop])
+}
+
+function downSort(prop) {
+  return currentUrls.sort((a, b) => a[prop] < b[prop]);
+}
 
 const validateUrl = (url) => {
   const urlRegex = /^(http|https)?:\/\/[w]{2,4}[a-zA-Z0-9-\.]+\.[a-z]{1,10}/
@@ -110,6 +125,7 @@ const postUrl = (url) => {
     body: JSON.stringify({ folderId: clickedFolder, url })
   })
   .then(response => response.json()).then(data => {
+    currentUrls = data
     renderUrls([data[data.length-1]])
   })
   .catch(err => 'err')
@@ -129,6 +145,7 @@ const renderUrls = (data, clickedFolder) => {
     data = data.filter(obj => obj.folderId == clickedFolder)
     currentUrls = data
   }
+
   data.map(obj => {
     $('.url-container').append(`
       <div class="url-wrapper">
