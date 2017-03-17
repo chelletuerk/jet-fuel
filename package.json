@@ -24,8 +24,8 @@
     "babel-loader": "^6.2.8",
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
-    "css-loader": "^0.26.0",
     "eslint": "^3.17.1",
+
     "jquery": "^3.1.1",
     "mocha": "^3.2.0",
     "mocha-loader": "^1.0.0",
@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "body-parser": "^1.17.1",
+    "css-loader": "^0.26.0",
     "express": "^4.15.2",
     "knex": "^0.12.8",
     "md5": "^2.2.1",

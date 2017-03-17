@@ -14,32 +14,6 @@ app.use(express.static('public'))
 
 app.set('port', process.env.PORT || 3000)
 
-// app.locals.folders = [
-//   { id: 1,
-//     name: 'fruit'
-//   },
-//   { id: 2,
-//     name: 'penguins',
-//   }
-// ]
-//
-// app.locals.urls = [
-//   { id: 1,
-//     folderId: 1,
-//     timestamp: '03142017',
-//     numOfClicks: 3,
-//     shortenedUrl: 'google1',
-//     url: 'http://www.google.com',
-//   },
-//   { id: 2,
-//     folderId: 2,
-//     timestamp: '03152017',
-//     numOfClicks: 1,
-//     shortenedUrl: 'amazon2',
-//     url: 'http://www.amazon.com',
-//   }
-// ]
-
 app.get('/', (request, response) => {
   fs.readFile(`${__dirname}/index.html`, (err, file) => {
     response.send(file)
@@ -136,8 +110,8 @@ app.put('/:shortUrl', (request, response) => {
   const { shortUrl } = request.params;
   let newCount;
 
-  database('urls').where('shortenedUrl', shortUrl).select()
-  .then((urlArray) => {
+  database('urls').where('shortenedUrl', shortUrl).select().then((urlArray) => {
+    console.log('urlArray:',urlArray)
     newCount = (urlArray[0].numOfClicks) + 1
   })
   .then(() => {
