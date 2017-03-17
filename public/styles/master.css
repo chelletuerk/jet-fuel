@@ -5,6 +5,11 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+button, input {
+  height: 30px;
+  margin: 10px;
+}
+
 button {
   cursor: pointer;
   border: none;
@@ -29,10 +34,12 @@ button:disabled {
 
 .folder-section {
   width: 50%;
+  min-width: 250px;
 }
 
 .url-section {
   width: 50%;
+  min-width: 720px;
 }
 
 h1 {
@@ -82,7 +89,8 @@ h2 {
 
 .url-header {
   display: flex;
-  /*border: 1px solid black;*/
+  font-size: 14px;
+  font-weight: 600;
   margin: 0 auto;
   text-align: left;
   justify-content: space-around;
@@ -91,6 +99,7 @@ h2 {
 
 .url-timestamp {
   flex-basis: 35%;
+  text-align: center;
 }
 
 .url-numOfClicks {
@@ -99,10 +108,11 @@ h2 {
 
 .url-longUrl {
   flex-basis: 35%;
+  text-align: center;
 }
 
 .shortUrlBtn {
-  flex-basis: 20%;
+  flex-basis: 13%;
 }
 
 
