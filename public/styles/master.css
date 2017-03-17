@@ -72,30 +72,42 @@ h2 {
   background-color: #64dbd0;
 }
 
-.url-container {
-  width: 90%;
-  /*margin: 20px auto;*/
-  /*text-align: left;*/
-  align-self: center;
-}
-
-/*.tbody {
-  width: 90%;
-  margin: 20px auto;
-}*/
-
 .url-wrapper {
-  padding: 5px;
-  /*width: 90%;
-  margin: 20px;
-  padding: 5px 20px;
-  text-align: left;*/
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 80%;
+  margin: 10px auto;
 }
 
-td {
-  text-align: center;
-  padding-left: 5px;
+.url-header {
+  display: flex;
+  /*border: 1px solid black;*/
+  margin: 0 auto;
+  text-align: left;
+  justify-content: space-around;
+  width: 80%;
 }
+
+.url-timestamp {
+  flex-basis: 35%;
+}
+
+.url-numOfClicks {
+  flex-basis: 10%;
+}
+
+.url-longUrl {
+  flex-basis: 35%;
+}
+
+.shortUrlBtn {
+  flex-basis: 20%;
+}
+
+
+
+
 
 
 /*#011627
