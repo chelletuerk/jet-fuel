@@ -162,20 +162,7 @@ const renderUrls = (data, clickedFolder) => {
 
 $('.url-container').on('click', '.shortenUrlBtn', (e) => {
   const shortUrl = e.target.innerHTML
-  const id = e.target.id
-  // console.log('shortUrl',shortUrl)
-  // console.log('id',id)
   fetch(`/${shortUrl}`, {
-    // headers: {
-    //   'Content-Type': 'application/json'
-    // },
-    // mode: 'no-cors',
     method: 'PUT'
-    // body: JSON.stringify({ id })
   })
-  // .then(response => response.json())
-  // .then(data => {
-    // console.log('data', data)
-  // })
-  // .catch(err => 'err')
 })
