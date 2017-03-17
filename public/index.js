@@ -147,15 +147,18 @@ const renderUrls = (data, clickedFolder) => {
   }
 
   data.map(obj => {
+    const date = moment(Number(obj.timestamp)).format('MMM Do, YYYY h:mm a');
     $('.url-container').append(`
-      <div class="url-wrapper">
-        <a id=${obj.id} target="_blank" href=${obj.url} class="shortenUrlBtn">${obj.shortenedUrl}
-        </a>
-        <br/>
-        <p class="url-timestamp">${moment(Number(obj.timestamp)).format('MMM Do, YYYY h:mm a')}</p>
-        <p>${obj.numOfClicks}</p>
-        <p>${obj.url}</p>
-      </div>
+      <tr class="url-wrapper">
+        <td>
+          <a id=${obj.id} target="_blank" href=${obj.url} class="shortenUrlBtn">
+            ${obj.shortenedUrl}
+          </a>
+        </td>
+        <td class="url-timestamp">${date}</td>
+        <td>${obj.numOfClicks}</td>
+        <td>${obj.url}</td>
+      </tr>
       `)
   })
 }
