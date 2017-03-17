@@ -9,9 +9,11 @@ exports.up = function(knex, Promise) {
 
         knex.schema.createTable('urls', function(table){
             table.string('id').primary();
-            table.string('shortenedUrl').unique();
+            table.string('shortenedUrl');
             table.string('url');
             table.integer('numOfClicks');
+            table.string('timestamp');
+            table.timestamp('date');
             table.integer('folderId')
                  .references('id')
                  .inTable('folders');

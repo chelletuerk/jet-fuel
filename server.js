@@ -84,16 +84,15 @@ app.get('/api/v1/urls', (request, response) => {
 app.post('/api/v1/urls', (request, response) => {
   const { folderId, url } = request.body
   const id = md5(url)
-  // const timestamp = Date.now()
+  const timestamp = Date.now();
   const numOfClicks = 0
   const shortenedUrl = id.slice(0,5);
-  const urlObj = { folderId, numOfClicks, shortenedUrl, url, id }
+  const urlObj = { folderId, numOfClicks, shortenedUrl, url, id, timestamp }
 
   database('urls').insert(urlObj)
   .then(function() {
     database('urls').select()
       .then(function(urls) {
-        console.log('here are the uuuuurrrrrlllssss',urls)
         response.status(200).json(urls);
       })
       .catch(function(error) {
@@ -112,40 +111,45 @@ app.post('/api/v1/urls', (request, response) => {
 //   response.json(app.locals.urls)
 // })
 
-app.put('/:shortUrl', (request, response) => {
+app.get('/:shortUrl', (request, response) => {
   const { shortUrl } = request.params;
-  // const { id } = request.body;
-  // console.log('id', id)
+  let longUrl;
   let newCount;
+
   database('urls').where('shortenedUrl', shortUrl).select()
   .then((urlArray) => {
-    // console.log('urlArray', urlArray)
+    longUrl = (urlArray[0].url)
     newCount = (urlArray[0].numOfClicks) + 1
-    // console.log('newCount', newCount)
   })
   .then(() => {
     database('urls').where('shortenedUrl', shortUrl).update({ numOfClicks: newCount })
-  })
-  .then((urls) => {
-    database('urls').where('shortenedUrl', shortUrl).select()
-    .then(urls => console.log('urls:',urls))
-    // response.status(200).json(urls);
+    .then(() => {
+      response.status(302).redirect(`${longUrl}`);
+    })
   })
   .catch((error) => {
     console.error('error getting short URL:', error)
   })
 })
 
+app.put('/:shortUrl', (request, response) => {
+  const { shortUrl } = request.params;
+  let newCount;
 
-//
-//   let redirectedObj = app.locals.urls.find(obj => {
-//     return obj.shortenedUrl === shortUrl
-//   })
-//   const url = redirectedObj.url
-//   redirectedObj.numOfClicks++
-//   console.log(app.locals.urls)
-//   response.redirect(url)
-// })
+  database('urls').where('shortenedUrl', shortUrl).select()
+  .then((urlArray) => {
+    newCount = (urlArray[0].numOfClicks) + 1
+  })
+  .then(() => {
+    database('urls').where('shortenedUrl', shortUrl).update({ numOfClicks: newCount })
+    .then((urls) => {
+      response.status(200).json(urls);
+    })
+  })
+  .catch((error) => {
+    console.error('error getting short URL:', error)
+  })
+})
 
 app.listen(app.get('port'), () => {
   console.log(`Running on ${app.get('port')}`)

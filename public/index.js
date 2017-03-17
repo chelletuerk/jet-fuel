@@ -147,14 +147,15 @@ const renderUrls = (data, clickedFolder) => {
   }
 
   data.map(obj => {
+    const date = moment(Number(obj.timestamp)).format('MMM Do, YYYY h:mm a');
     $('.url-container').append(`
       <div class="url-wrapper">
-        <a id=${obj.id} target="_blank" href=${obj.url} class="shortenUrlBtn">${obj.shortenedUrl}
+        <a id=${obj.id} target="_blank" href=${obj.url} class="shortenUrlBtn">
+          ${obj.shortenedUrl}
         </a>
-        <br/>
-        <p class="url-timestamp">${obj.timestamp}</p>
-        <p>${obj.numOfClicks}</p>
-        <p>${obj.url}</p>
+        <div class="url-timestamp">${date}</div>
+        <div class="url-numOfClicks">${obj.numOfClicks}</div>
+        <div class="url-longUrl">${obj.url}</div>
       </div>
       `)
   })
@@ -162,20 +163,7 @@ const renderUrls = (data, clickedFolder) => {
 
 $('.url-container').on('click', '.shortenUrlBtn', (e) => {
   const shortUrl = e.target.innerHTML
-  const id = e.target.id
-  // console.log('shortUrl',shortUrl)
-  // console.log('id',id)
   fetch(`/${shortUrl}`, {
-    // headers: {
-    //   'Content-Type': 'application/json'
-    // },
-    // mode: 'no-cors',
     method: 'PUT'
-    // body: JSON.stringify({ id })
   })
-  // .then(response => response.json())
-  // .then(data => {
-    // console.log('data', data)
-  // })
-  // .catch(err => 'err')
 })
