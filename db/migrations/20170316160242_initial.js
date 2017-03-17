@@ -12,6 +12,8 @@ exports.up = function(knex, Promise) {
             table.string('shortenedUrl');
             table.string('url');
             table.integer('numOfClicks');
+            table.string('timestamp');
+            table.timestamp('date');
             table.integer('folderId')
                  .references('id')
                  .inTable('folders');

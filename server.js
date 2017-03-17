@@ -84,16 +84,15 @@ app.get('/api/v1/urls', (request, response) => {
 app.post('/api/v1/urls', (request, response) => {
   const { folderId, url } = request.body
   const id = md5(url)
-  // const timestamp = Date.now()
+  const timestamp = Date.now();
   const numOfClicks = 0
   const shortenedUrl = id.slice(0,5);
-  const urlObj = { folderId, numOfClicks, shortenedUrl, url, id }
+  const urlObj = { folderId, numOfClicks, shortenedUrl, url, id, timestamp }
 
   database('urls').insert(urlObj)
   .then(function() {
     database('urls').select()
       .then(function(urls) {
-        console.log('here are the uuuuurrrrrlllssss',urls)
         response.status(200).json(urls);
       })
       .catch(function(error) {
