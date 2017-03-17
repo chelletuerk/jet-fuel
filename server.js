@@ -113,10 +113,11 @@ app.post('/api/v1/urls', (request, response) => {
 // })
 
 app.put('/:shortUrl', (request, response) => {
-  const { shortUrl } = request.params;
   // const { id } = request.body;
   // console.log('id', id)
+  const { shortUrl } = request.params;
   let newCount;
+
   database('urls').where('shortenedUrl', shortUrl).select()
   .then((urlArray) => {
     // console.log('urlArray', urlArray)
@@ -125,11 +126,11 @@ app.put('/:shortUrl', (request, response) => {
   })
   .then(() => {
     database('urls').where('shortenedUrl', shortUrl).update({ numOfClicks: newCount })
-  })
-  .then((urls) => {
-    database('urls').where('shortenedUrl', shortUrl).select()
-    .then(urls => console.log('urls:',urls))
-    // response.status(200).json(urls);
+    .then((urls) => {
+      // database('urls').where('shortenedUrl', shortUrl).select()
+      // .then(urls => console.log('urls:',urls))
+      response.status(200).json(urls);
+    })
   })
   .catch((error) => {
     console.error('error getting short URL:', error)
