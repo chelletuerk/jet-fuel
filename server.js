@@ -14,31 +14,31 @@ app.use(express.static('public'))
 
 app.set('port', process.env.PORT || 3000)
 
-app.locals.folders = [
-  { id: 1,
-    name: 'fruit'
-  },
-  { id: 2,
-    name: 'penguins',
-  }
-]
-
-app.locals.urls = [
-  { id: 1,
-    folderId: 1,
-    timestamp: '03142017',
-    numOfClicks: 3,
-    shortenedUrl: 'google1',
-    url: 'http://www.google.com',
-  },
-  { id: 2,
-    folderId: 2,
-    timestamp: '03152017',
-    numOfClicks: 1,
-    shortenedUrl: 'amazon2',
-    url: 'http://www.amazon.com',
-  }
-]
+// app.locals.folders = [
+//   { id: 1,
+//     name: 'fruit'
+//   },
+//   { id: 2,
+//     name: 'penguins',
+//   }
+// ]
+//
+// app.locals.urls = [
+//   { id: 1,
+//     folderId: 1,
+//     timestamp: '03142017',
+//     numOfClicks: 3,
+//     shortenedUrl: 'google1',
+//     url: 'http://www.google.com',
+//   },
+//   { id: 2,
+//     folderId: 2,
+//     timestamp: '03152017',
+//     numOfClicks: 1,
+//     shortenedUrl: 'amazon2',
+//     url: 'http://www.amazon.com',
+//   }
+// ]
 
 app.get('/', (request, response) => {
   fs.readFile(`${__dirname}/index.html`, (err, file) => {
@@ -102,30 +102,34 @@ app.post('/api/v1/urls', (request, response) => {
   })
 })
 
-app.patch('/api/v1/urls/:id', (request, response) => {
-  const { id } = request.params
-  const { numOfClicks } = request.body
-  const selectedUrl = app.locals.urls.find(obj => obj.id == id)
-  selectedUrl.numOfClicks = numOfClicks
-
-  if (!selectedUrl) {return response.sendStatus(404)}
-  response.json(app.locals.urls)
-})
+// app.patch('/api/v1/urls/:id', (request, response) => {
+//   const { id } = request.params
+//   const { numOfClicks } = request.body
+//   const selectedUrl = app.locals.urls.find(obj => obj.id == id)
+//   selectedUrl.numOfClicks = numOfClicks
+//
+//   if (!selectedUrl) {return response.sendStatus(404)}
+//   response.json(app.locals.urls)
+// })
 
 app.put('/:shortUrl', (request, response) => {
   const { shortUrl } = request.params;
-  let updatedClicks;
-
+  // const { id } = request.body;
+  // console.log('id', id)
+  let newCount;
   database('urls').where('shortenedUrl', shortUrl).select()
-  .then((url) => {
-    updatedClicks = (url[0].numOfClicks) + 1
-    debugger;
+  .then((urlArray) => {
+    // console.log('urlArray', urlArray)
+    newCount = (urlArray[0].numOfClicks) + 1
+    // console.log('newCount', newCount)
   })
   .then(() => {
-    database('urls').where('shortenedUrl',shortUrl).update({ numOfClicks: updatedClicks })
+    database('urls').where('shortenedUrl', shortUrl).update({ numOfClicks: newCount })
   })
-  .then(() => {
-    response.status(200);
+  .then((urls) => {
+    database('urls').where('shortenedUrl', shortUrl).select()
+    .then(urls => console.log('urls:',urls))
+    // response.status(200).json(urls);
   })
   .catch((error) => {
     console.error('error getting short URL:', error)
