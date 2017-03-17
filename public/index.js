@@ -162,8 +162,11 @@ const renderUrls = (data, clickedFolder) => {
 }
 
 $('.url-container').on('click', '.shortenUrlBtn', (e) => {
-  const shortUrl = e.target.innerHTML
+  const shortUrl = e.target.innerHTML.trim()
   fetch(`/${shortUrl}`, {
     method: 'PUT'
+  })
+  .then(response => response.json()).then(data => {
+    console.log(data)
   })
 })
