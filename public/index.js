@@ -152,7 +152,7 @@ const renderUrls = (data, clickedFolder) => {
         <a id=${obj.id} target="_blank" href=${obj.url} class="shortenUrlBtn">${obj.shortenedUrl}
         </a>
         <br/>
-        <p class="url-timestamp">${moment(obj.timestamp).format('MMM Do, YYYY h:mm a')}</p>
+        <p class="url-timestamp">${moment(Number(obj.timestamp)).format('MMM Do, YYYY h:mm a')}</p>
         <p>${obj.numOfClicks}</p>
         <p>${obj.url}</p>
       </div>
